@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import BiblePage from "./pages/BiblePage";
+import Index from "./pages/Index";
 import DiscoverPage from "./pages/DiscoverPage";
 import AIPage from "./pages/AIPage";
 import BookmarksPage from "./pages/BookmarksPage";
@@ -31,7 +31,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<BiblePage />} />
+              <Route path="/" element={<Index />} />
               <Route path="/discover" element={<DiscoverPage />} />
               <Route path="/ai" element={<AIPage />} />
               <Route path="/bookmarks" element={<BookmarksPage />} />

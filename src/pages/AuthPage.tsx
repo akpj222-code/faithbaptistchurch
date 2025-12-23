@@ -132,12 +132,12 @@ const AuthPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <User className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 w-4 h-4 text-muted-foreground pointer-events-none z-10" />
+                          <FormControl>
                             <Input placeholder="John Doe" className="pl-10" {...field} />
-                          </div>
-                        </FormControl>
+                          </FormControl>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -148,12 +148,12 @@ const AuthPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground pointer-events-none z-10" />
+                          <FormControl>
                             <Input type="email" placeholder="you@example.com" className="pl-10" {...field} />
-                          </div>
-                        </FormControl>
+                          </FormControl>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -164,12 +164,12 @@ const AuthPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Lock className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 w-4 h-4 text-muted-foreground pointer-events-none z-10" />
+                          <FormControl>
                             <Input type="password" placeholder="••••••••" className="pl-10" {...field} />
-                          </div>
-                        </FormControl>
+                          </FormControl>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -180,12 +180,12 @@ const AuthPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Lock className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 w-4 h-4 text-muted-foreground pointer-events-none z-10" />
+                          <FormControl>
                             <Input type="password" placeholder="••••••••" className="pl-10" {...field} />
-                          </div>
-                        </FormControl>
+                          </FormControl>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -205,12 +205,12 @@ const AuthPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground pointer-events-none z-10" />
+                          <FormControl>
                             <Input type="email" placeholder="you@example.com" className="pl-10" {...field} />
-                          </div>
-                        </FormControl>
+                          </FormControl>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -221,12 +221,12 @@ const AuthPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Lock className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 w-4 h-4 text-muted-foreground pointer-events-none z-10" />
+                          <FormControl>
                             <Input type="password" placeholder="••••••••" className="pl-10" {...field} />
-                          </div>
-                        </FormControl>
+                          </FormControl>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
