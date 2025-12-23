@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 const SettingsPage = () => {
   const { isDarkMode, toggleDarkMode, fontSize, setFontSize } = useApp();
-  const { user, profile, signOut, isPastor } = useAuth();
+  const { user, profile, signOut, isPastor, userRole } = useAuth();
   const navigate = useNavigate();
   
   const handleSignOut = async () => {
@@ -42,7 +42,7 @@ const SettingsPage = () => {
                 {isPastor && (
                   <Badge variant="secondary" className="flex items-center gap-1">
                     <Shield className="w-3 h-3" />
-                    {profile?.role === 'admin' ? 'Admin' : 'Pastor'}
+                    {userRole === 'admin' ? 'Admin' : 'Pastor'}
                   </Badge>
                 )}
               </div>
