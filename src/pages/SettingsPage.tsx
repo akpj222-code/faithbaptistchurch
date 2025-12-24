@@ -110,7 +110,7 @@ const SettingsPage = () => {
             <Info className="w-5 h-5" />
             About
           </h2>
-          <p className="text-sm text-muted-foreground">Church Bible App v1.0.0</p>
+          <p className="text-sm text-muted-foreground">Faith Baptist Church App v1.0.0</p>
           <p className="text-xs text-muted-foreground mt-1">
             Your daily companion for scripture and spiritual growth.
           </p>
