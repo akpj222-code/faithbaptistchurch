@@ -4,13 +4,14 @@ import {
   BookOpen, Upload, Calendar, Bell, Users, 
   FileText, Heart, Video, Quote, Image, 
   ArrowRight, Plus, BarChart3, LogOut,
-  Sparkles, ChevronRight, Megaphone
+  Sparkles, ChevronRight, Megaphone, Trash2, Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
 interface DashboardStats {
@@ -23,6 +24,7 @@ interface DashboardStats {
 const PastorDashboard = () => {
   const { user, profile, isPastor, signOut } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [stats, setStats] = useState<DashboardStats>({
     totalStories: 0,
     totalDailyManna: 0,
@@ -31,6 +33,7 @@ const PastorDashboard = () => {
   });
   const [recentStories, setRecentStories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCleaningUp, setIsCleaningUp] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -100,6 +103,32 @@ const PastorDashboard = () => {
     navigate('/');
   };
 
+  const handleManualCleanup = async () => {
+    setIsCleaningUp(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('cleanup-old-content');
+      
+      if (error) throw error;
+      
+      toast({
+        title: 'Cleanup Complete',
+        description: data?.message || 'Old content has been removed to save storage.',
+      });
+      
+      // Refresh dashboard data
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Cleanup error:', error);
+      toast({
+        title: 'Cleanup Failed',
+        description: 'Could not run cleanup. Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsCleaningUp(false);
+    }
+  };
+
   const quickActions = [
     { icon: Upload, label: 'New Story', path: '/pastor/upload', color: 'bg-blue-500/10 text-blue-500' },
     { icon: Calendar, label: 'Daily Manna', path: '/pastor/daily-manna', color: 'bg-amber-500/10 text-amber-500' },
@@ -128,6 +157,19 @@ const PastorDashboard = () => {
             <p className="text-sm text-muted-foreground">Welcome, {profile?.full_name || 'Pastor'}</p>
           </div>
           <div className="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleManualCleanup}
+              disabled={isCleaningUp}
+              title="Remove content older than 3 months (keeps pinned announcements)"
+            >
+              {isCleaningUp ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Trash2 className="w-4 h-4" />
+              )}
+            </Button>
             <Button variant="outline" size="sm" onClick={() => navigate('/')}>
               <BookOpen className="w-4 h-4 mr-2" />
               View App
