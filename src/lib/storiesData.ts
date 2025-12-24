@@ -1,6 +1,6 @@
 export interface Story {
   id: string;
-  type: 'video' | 'quote' | 'verse' | 'image';
+  type: 'video' | 'quote' | 'verse' | 'image' | 'devotional';
   title: string;
   content: string;
   author: string;
