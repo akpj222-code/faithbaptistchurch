@@ -1,10 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, Send, User, Loader2, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Message {
   id: string;
@@ -34,8 +46,12 @@ export const AIAssistant = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+  
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -135,6 +151,12 @@ export const AIAssistant = () => {
   };
 
   const handleSend = async () => {
+    // Check for authentication
+    if (!user) {
+      setShowAuthDialog(true);
+      return;
+    }
+
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -169,6 +191,11 @@ export const AIAssistant = () => {
   };
 
   const handleSuggestedQuestion = (question: string) => {
+    // Check for authentication
+    if (!user) {
+      setShowAuthDialog(true);
+      return;
+    }
     setInput(question);
   };
 
@@ -270,6 +297,24 @@ export const AIAssistant = () => {
           </Button>
         </div>
       </div>
+
+      {/* Auth Dialog */}
+      <AlertDialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sign In Required</AlertDialogTitle>
+            <AlertDialogDescription>
+              To use the Bible Assistant, please sign in or create an account. This helps us save your history and provide a better experience.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => navigate('/settings')}>
+              Go to Settings
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
