@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 interface SplashScreenProps {
   videoSrc: string;
   onComplete: () => void;
-  duration?: number; // Duration in milliseconds before hiding
+  duration?: number;
 }
 
 const SplashScreen = ({ videoSrc, onComplete, duration = 3000 }: SplashScreenProps) => {
@@ -12,29 +12,33 @@ const SplashScreen = ({ videoSrc, onComplete, duration = 3000 }: SplashScreenPro
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Start fade out after duration
+    // 1. FORCE MUTE (Critical for Mobile Autoplay)
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.defaultMuted = true;
+      
+      // 2. Play with error catching (for Low Power Mode)
+      videoRef.current.play().catch((err) => {
+        console.warn("Video autoplay blocked (likely Low Power Mode):", err);
+      });
+    }
+
+    // 3. Timer to fade out
     const fadeTimer = setTimeout(() => {
       setIsFading(true);
     }, duration);
 
-    // Complete hide after fade animation
+    // 4. Timer to remove component
     const hideTimer = setTimeout(() => {
       setIsVisible(false);
       onComplete();
-    }, duration + 500); // 500ms for fade animation
+    }, duration + 500); // Wait for fade to finish
 
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(hideTimer);
     };
   }, [duration, onComplete]);
-
-  // Auto-play video when component mounts
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(console.error);
-    }
-  }, []);
 
   if (!isVisible) return null;
 
@@ -50,17 +54,13 @@ const SplashScreen = ({ videoSrc, onComplete, duration = 3000 }: SplashScreenPro
         className="w-full h-full object-cover"
         autoPlay
         muted
-        playsInline
-        loop={false}
+        playsInline // REQUIRED for iOS (prevents full-screen popup)
+        preload="auto"
       />
       
-      {/* Fallback content if video fails */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm opacity-0 pointer-events-none">
-        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center animate-pulse">
-          <span className="text-4xl">✝️</span>
-        </div>
-        <h1 className="text-2xl font-serif font-bold text-foreground mt-4">Faith Baptist Church</h1>
-        <p className="text-muted-foreground mt-2">Loading...</p>
+      {/* Fallback Text (Shows if video is blocked by Low Power Mode) */}
+      <div className="absolute inset-0 flex items-center justify-center -z-10">
+        <h1 className="text-2xl font-bold animate-pulse">Faith Baptist Church</h1>
       </div>
     </div>
   );
