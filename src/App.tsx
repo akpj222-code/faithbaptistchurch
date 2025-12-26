@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useKillswitch } from "@/hooks/useKillswitch";
-import { KilledScreen } from "@/components/KilledScreen";
+import { KilledScreen } from "@/components/KilledScreen"; // Make sure this file exists!
 import SplashScreen from "@/components/splash/SplashScreen";
 import Index from "./pages/Index";
 import DiscoverPage from "./pages/DiscoverPage";
@@ -25,14 +25,18 @@ import PastorAnnouncementsPage from "./pages/PastorAnnouncementsPage";
 import ReadingPlansPage from "./pages/ReadingPlansPage";
 import NotFound from "./pages/NotFound";
 
-// Import your splash video here - place the video file in src/assets/
-// Example: import splashVideo from "@/assets/splash-video.mp4";
-
 const queryClient = new QueryClient();
 
 const App = () => {
-   const { isKilled, loading } = useKillswitch();
+  // --- 1. DEFINE ALL HOOKS FIRST (Moving these up fixes the white screen) ---
+  const { isKilled, loading } = useKillswitch();
+  const [showSplash, setShowSplash] = useState(true);
+  
+  const handleSplashComplete = useCallback(() => {
+    setShowSplash(false);
+  }, []);
 
+  // --- 2. THEN HANDLE CONDITIONAL RETURNS ---
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -44,11 +48,8 @@ const App = () => {
   if (isKilled) {
     return <KilledScreen />;
   }
-   const [showSplash, setShowSplash] = useState(true);
-  const handleSplashComplete = useCallback(() => {
-    setShowSplash(false);
-  }, []);
 
+  // --- 3. MAIN RENDER ---
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -57,12 +58,11 @@ const App = () => {
             <Toaster />
             <Sonner />
             
-            {/* Splash Screen - Replace the videoSrc with your video import */}
             {showSplash && (
               <SplashScreen 
-                videoSrc="/splash-video.mp4" // Place your video in public/ folder OR import from assets
+                videoSrc="/splash-video.mp4" 
                 onComplete={handleSplashComplete}
-                duration={3000} // Adjust duration in milliseconds
+                duration={3000} 
               />
             )}
             
