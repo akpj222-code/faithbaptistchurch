@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { useKillswitch } from "@/hooks/useKillswitch";
+import { KilledScreen } from "@/components/KilledScreen";
 import SplashScreen from "@/components/splash/SplashScreen";
 import Index from "./pages/Index";
 import DiscoverPage from "./pages/DiscoverPage";
@@ -29,8 +31,20 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [showSplash, setShowSplash] = useState(true);
-  
+   const { isKilled, loading } = useKillswitch();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
+  if (isKilled) {
+    return <KilledScreen />;
+  }
+   const [showSplash, setShowSplash] = useState(true);
   const handleSplashComplete = useCallback(() => {
     setShowSplash(false);
   }, []);
