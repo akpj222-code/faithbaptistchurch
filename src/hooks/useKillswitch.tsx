@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 const KILLSWITCH_URL = 'https://rxxtcvyztgjzlcsvmyox.supabase.co';
 const KILLSWITCH_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4eHRjdnl6dGdqemxjc3ZteW94Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY3MjgyNzcsImV4cCI6MjA4MjMwNDI3N30.CPjgb825u-BznxCSO5jXMD_v2K5_4aL52qnh2ScAaPY';
 
-const SITE_NAME = 'TAMIC Group';
+const SITE_NAME = 'Faith Baptist Church';
 
 // 2. Create a specific client just for this check
 const killswitchClient = createClient(KILLSWITCH_URL, KILLSWITCH_KEY);
